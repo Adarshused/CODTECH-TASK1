@@ -1,0 +1,104 @@
+/* i have created an temperature convertor ...that will take the temperature as input and asks the user to convert the temperature from one temperature to another*/
+
+
+#include<bits\stdc++.h>
+using namespace std;
+
+
+
+int celtofar(double temp){
+return ((temp* 9)/5)+32;
+}
+double fartocel(double temp){
+return ((temp-32)*5)/9;
+}
+double celtokel(double temp){
+return temp+273.;
+}
+double celtorank(double temp){
+return (temp*9)/5+491.67;
+}
+double frtokel(double temp){
+double x=((temp-32)*5)/9;
+return x+273.15;
+}
+double frtorank(double temp){
+return temp+459.67;
+}
+double keltocel(double temp){
+return temp-273.15;
+}
+double keltofar(double temp){
+double x=temp-273.15;
+return (x*9)/5+32;
+}
+double keltorank(double temp){
+return (temp*9)/5;
+}
+double ranktocel(double temp){
+double x=temp*5/9;
+return x-273.15;
+}
+double ranktokel(double temp){
+ return temp*5/9;
+}
+double ranktofr(double temp){
+return temp-459.67;
+}
+int main(){
+
+cout<<"Hello! welcome to temperature converter...";
+cout<<endl;
+
+cout<<endl;
+
+cout<<"enter temperature :";
+double temp;
+
+cin>>temp;
+cout<<"convert temperature from :celsius or farenheit or kelvin or rankine : ";
+string x;
+cin>>x;
+cout<<"convert temperature to:celisus or farenheit or kelvin or rankine : ";
+string y;
+cin>>y;
+if(x=="celsius" and y=="farenheit"){
+   cout<<celtofar(temp)<<"F";
+}
+else if(x=="farenheit" and y=="celsius"){
+    cout<<fartocel(temp)<<"C";
+}
+else if(x=="celsius" and y=="kelvin"){
+    cout<<celtokel(temp)<<"K";
+}
+else if(x=="celsius" and y=="rankine"){
+    cout<<celtorank(temp)<<"R";
+}
+else if(x=="farenheit" and y=="kelvin"){
+    cout<<frtokel(temp)<<"K";
+}
+else if(x=="farenheit" and y=="rankine"){
+    cout<<frtorank(temp)<<"R";
+}
+else if(x=="kelvin" and y=="celsius"){
+    cout<<keltocel(temp)<<"C";
+}
+else if(x=="kelvin" and y=="farenheit"){
+    cout<<keltofar(temp)<<"F";
+}
+else if(x=="kelvin" and y=="rankine"){
+    cout<<keltorank(temp)<<"R";
+}
+else if(x=="rankine" and y=="celsius"){
+    cout<<ranktocel(temp)<<"C";
+}
+else if(x=="rankine" and y=="kelvin"){
+    cout<<ranktokel(temp)<<"K";
+}
+else if(x=="rankine" and y=="farenheit"){
+    cout<<ranktofr(temp)<<"F";
+}
+else cout<<"enter valid conversion";
+}
+
+
