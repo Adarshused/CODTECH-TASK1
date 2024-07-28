@@ -1,104 +1,56 @@
-/* i have created an temperature convertor ...that will take the temperature as input and asks the user to convert the temperature from one temperature to another*/
+## i have created an program for data preprocessing for transforming raw data into format suitable for building and training ai models
+
+import pandas as pd
+import numpy as np
+from sklearn.impute import SimpleImputer 
+from sklearn.preprocessing import OneHotEncoder 
+from sklearn.preprocessing import MinMaxScaler,StandardScaler
+
+## step-1 loading dataset
+dataset=pd.read_csv('Data.csv') 
+print("dataset before preprocessing: ")
+print(dataset)
+
+## step-2 finding missing values 
+missing_values=dataset.isnull().sum()
+# print(missing_values[missing_values>0])
+
+## step-3 Encoding missing values
+imputer=SimpleImputer(strategy= 'mean')
+
+##applying imputer to numerical columns which has missing values
+dataset[['Age','Salary']]=imputer.fit_transform(dataset[['Age','Salary']])
 
 
-#include<bits\stdc++.h>
-using namespace std;
+## applying imputer to categorical colns using OneHotEncoder
+# 1) identifying the categorical_cols
+categorical_col=['Country','Purchased']
+## 2) creating obj for OneHotEncoder
+encoder=OneHotEncoder( sparse_output=False ,drop='first')
+## 3) converting categorical_col to numerical
+encoded_feature=encoder.fit_transform(dataset[categorical_col])
+encoded_feature_names=encoder.get_feature_names_out(categorical_col)
+##creating new dataframe for encoded categorical cols
+encoded_df=pd.DataFrame(encoded_feature,columns=encoded_feature_names)
+## drop orginal categorical col from dataset
+dataset=dataset.drop(categorical_col,axis=1)
+
+dataset=pd.concat([dataset,encoded_df],axis=1)
 
 
+## step-5 scaling
+min_max_scaler=MinMaxScaler()
+numerical_cols=['Age','Salary','Country_Antartica','Country_China','Country_India','Country_Indonesia','Country_Sri lanka','Country_nan','Purchased_Yes','Purchased_nan']
 
-int celtofar(double temp){
-return ((temp* 9)/5)+32;
-}
-double fartocel(double temp){
-return ((temp-32)*5)/9;
-}
-double celtokel(double temp){
-return temp+273.;
-}
-double celtorank(double temp){
-return (temp*9)/5+491.67;
-}
-double frtokel(double temp){
-double x=((temp-32)*5)/9;
-return x+273.15;
-}
-double frtorank(double temp){
-return temp+459.67;
-}
-double keltocel(double temp){
-return temp-273.15;
-}
-double keltofar(double temp){
-double x=temp-273.15;
-return (x*9)/5+32;
-}
-double keltorank(double temp){
-return (temp*9)/5;
-}
-double ranktocel(double temp){
-double x=temp*5/9;
-return x-273.15;
-}
-double ranktokel(double temp){
- return temp*5/9;
-}
-double ranktofr(double temp){
-return temp-459.67;
-}
-int main(){
+scaled_feature= min_max_scaler.fit_transform(dataset[numerical_cols])
 
-cout<<"Hello! welcome to temperature converter...";
-cout<<endl;
+scaled_df=pd.DataFrame(scaled_feature,columns=numerical_cols)
+dataset[numerical_cols]=scaled_df
 
-cout<<endl;
-
-cout<<"enter temperature :";
-double temp;
-
-cin>>temp;
-cout<<"convert temperature from :celsius or farenheit or kelvin or rankine : ";
-string x;
-cin>>x;
-cout<<"convert temperature to:celisus or farenheit or kelvin or rankine : ";
-string y;
-cin>>y;
-if(x=="celsius" and y=="farenheit"){
-   cout<<celtofar(temp)<<"F";
-}
-else if(x=="farenheit" and y=="celsius"){
-    cout<<fartocel(temp)<<"C";
-}
-else if(x=="celsius" and y=="kelvin"){
-    cout<<celtokel(temp)<<"K";
-}
-else if(x=="celsius" and y=="rankine"){
-    cout<<celtorank(temp)<<"R";
-}
-else if(x=="farenheit" and y=="kelvin"){
-    cout<<frtokel(temp)<<"K";
-}
-else if(x=="farenheit" and y=="rankine"){
-    cout<<frtorank(temp)<<"R";
-}
-else if(x=="kelvin" and y=="celsius"){
-    cout<<keltocel(temp)<<"C";
-}
-else if(x=="kelvin" and y=="farenheit"){
-    cout<<keltofar(temp)<<"F";
-}
-else if(x=="kelvin" and y=="rankine"){
-    cout<<keltorank(temp)<<"R";
-}
-else if(x=="rankine" and y=="celsius"){
-    cout<<ranktocel(temp)<<"C";
-}
-else if(x=="rankine" and y=="kelvin"){
-    cout<<ranktokel(temp)<<"K";
-}
-else if(x=="rankine" and y=="farenheit"){
-    cout<<ranktofr(temp)<<"F";
-}
-else cout<<"enter valid conversion";
-}
+pd.set_option('display.max_columns',None)
+pd.set_option('display.max_colwidth',None)
+pd.set_option('display.expand_frame_repr',False)
+print("dataset after preprocessing: ")
+print(dataset)
 
 
